@@ -22,8 +22,12 @@ public class CameraController : MonoBehaviour
     float invertXVal;
     float invertYVal;
 
+    float focusDistance = 1.5f;
+    float baseDistance = 0;
+
     private void Start()
     {
+        baseDistance = distance;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -47,5 +51,23 @@ public class CameraController : MonoBehaviour
     }
 
     public Quaternion PlanarRotation => Quaternion.Euler(0, rotationY, 0);
+
+    public void focusCamera(bool action)
+    {
+        if (action)
+        {
+            if(distance > focusDistance)
+            {
+                distance -= 0.1f;
+            }
+        }
+        else
+        {
+            if (distance < baseDistance)
+            {
+                distance += 0.1f;
+            }
+        }
+    }
 
 }

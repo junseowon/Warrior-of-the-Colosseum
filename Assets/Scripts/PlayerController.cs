@@ -14,6 +14,11 @@ public class PlayerController : MonoBehaviour
 
     float ySpeed;
 
+    float walkSpeed = 3f;
+    float runSpeed = 8f;
+
+    float animationAmount = 0f;
+
     Quaternion targetRotation;
 
     CameraController cameraController;
@@ -32,6 +37,8 @@ public class PlayerController : MonoBehaviour
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
+        bool focus = Input.GetKey(KeyCode.LeftShift);
+
         float moveAmount = Mathf.Clamp01(Mathf.Abs(h) + Mathf.Abs(v));
 
         var moveInput = (new Vector3(h, 0, v)).normalized;
@@ -39,6 +46,17 @@ public class PlayerController : MonoBehaviour
         var moveDir = cameraController.PlanarRotation * moveInput;
 
         GroundCheck();
+
+        if (focus)
+        {
+            moveSpeed = runSpeed;
+            animationAmount = 1;
+        }
+        else
+        {
+            moveSpeed = walkSpeed;
+            animationAmount = 0.3f;
+        }
 
         if (isGrounded)
         {
@@ -61,7 +79,8 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 
                                                       rotationSpeed * Time.deltaTime);
 
-        animator.SetFloat("moveAmount", moveAmount, 0.2f, Time.deltaTime);
+        cameraController.focusCamera(focus);
+        animator.SetFloat("moveAmount", moveAmount * animationAmount, 0.2f, Time.deltaTime);
     }
 
     void GroundCheck()

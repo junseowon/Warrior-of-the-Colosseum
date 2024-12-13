@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
@@ -37,6 +38,8 @@ public class PlayerController : MonoBehaviour
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
+        bool click = Input.GetMouseButtonDown(0);
+
         bool focus = Input.GetKey(KeyCode.LeftShift);
 
         float moveAmount = Mathf.Clamp01(Mathf.Abs(h) + Mathf.Abs(v));
@@ -46,6 +49,11 @@ public class PlayerController : MonoBehaviour
         var moveDir = cameraController.PlanarRotation * moveInput;
 
         GroundCheck();
+
+        if (click)
+        {
+            AttackSlash();
+        }
 
         if (focus)
         {
@@ -86,6 +94,11 @@ public class PlayerController : MonoBehaviour
     void GroundCheck()
     {
         isGrounded = Physics.CheckSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius, groundLayer);
+    }
+
+    void AttackSlash()
+    {
+        animator.SetTrigger("Slash");
     }
 
     private void OnDrawGizmosSelected()

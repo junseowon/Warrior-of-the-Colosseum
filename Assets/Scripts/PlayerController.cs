@@ -15,8 +15,11 @@ public class PlayerController : MonoBehaviour
 
     float ySpeed;
 
+    float stopSpeed = 0f;
     float walkSpeed = 3f;
     float runSpeed = 8f;
+
+    bool isAttack = false;
 
     float animationAmount = 0f;
 
@@ -53,7 +56,7 @@ public class PlayerController : MonoBehaviour
         if (click)
         {
             AttackSlash();
-        }
+        }       
 
         if (focus)
         {
@@ -62,8 +65,11 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+            
             moveSpeed = walkSpeed;
             animationAmount = 0.3f;
+            
+            
         }
 
         if (isGrounded)

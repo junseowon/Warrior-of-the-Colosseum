@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     float runSpeed = 8f;
 
     bool isAttack = false;
+    bool isBlock = false;
 
     float animationAmount = 0f;
 
@@ -41,7 +42,7 @@ public class PlayerController : MonoBehaviour
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-        bool click = Input.GetMouseButtonDown(0);
+        bool clickL = Input.GetMouseButtonDown(0);
 
         bool focus = Input.GetKey(KeyCode.LeftShift);
 
@@ -53,10 +54,18 @@ public class PlayerController : MonoBehaviour
 
         GroundCheck();
 
-        if (click)
+        if (Input.GetMouseButton(1))
         {
-            AttackSlash();
-        }       
+            isBlock = true;
+            BlockShield(isBlock);
+        }
+        else
+        {
+            isBlock = false;
+            BlockShield(isBlock);
+            AttackSlash(clickL);
+        }
+
 
         if (focus)
         {
@@ -102,9 +111,17 @@ public class PlayerController : MonoBehaviour
         isGrounded = Physics.CheckSphere(transform.TransformPoint(groundCheckOffset), groundCheckRadius, groundLayer);
     }
 
-    void AttackSlash()
+    void AttackSlash(bool isAttack)
     {
-        animator.SetTrigger("Slash");
+        if (isAttack)
+        {
+            animator.SetTrigger("Slash");
+        }
+    }
+
+    void BlockShield(bool isBlock)
+    {
+        animator.SetBool("isBlock", isBlock);
     }
 
     private void OnDrawGizmosSelected()

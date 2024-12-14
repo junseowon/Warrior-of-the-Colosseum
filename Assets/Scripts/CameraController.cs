@@ -22,7 +22,7 @@ public class CameraController : MonoBehaviour
     float invertXVal;
     float invertYVal;
 
-    float focusDistance = 1.5f;
+    float focusDistance = 2.0f;
     float baseDistance = 0;
 
     private void Start()
